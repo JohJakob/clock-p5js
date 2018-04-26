@@ -12,7 +12,7 @@ function setup() {
   angleMode(DEGREES);
 
   setSizes();
-  setColors();
+  setColorsAndWeights();
 }
 
 function draw() {
@@ -24,9 +24,8 @@ function draw() {
   translate(width / 2, height / 2);
   rotate(-90);
 
-  // Draw hour scale
-
   drawHourScale();
+  drawMinuteScale();
 
   pop();
 }
@@ -50,12 +49,16 @@ function setSizes() {
   }
 }
 
-function setColors() {
-  // Set the initial colors
+function setColorsAndWeights() {
+  // Set the initial colors and stroke weights
 
   backgroundColor = color(0);
+
   hourScaleColor = color(255);
   hourScaleStrokeWeight = 5;
+
+  minuteScaleColor = color(255);
+  minuteScaleStrokeWeight = 1;
 }
 
 function drawHourScale() {
@@ -68,6 +71,21 @@ function drawHourScale() {
     strokeWeight(hourScaleStrokeWeight);
     line(clockSize, 0, clockSize - longestSide / 20, 0);
     rotate(30);
+  }
+
+  pop();
+}
+
+function drawMinuteScale() {
+  push();
+
+  // Draw 60 lines as the minute scale
+
+  for (var i = 0; i < 60; i++) {
+    stroke(minuteScaleColor);
+    strokeWeight(minuteScaleStrokeWeight);
+    line(clockSize, 0, clockSize - longestSide / 40, 0);
+    rotate(6);
   }
 
   pop();
