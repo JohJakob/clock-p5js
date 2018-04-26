@@ -12,7 +12,8 @@ function setup() {
   angleMode(DEGREES);
 
   setSizes();
-  setColorsAndWeights();
+  setColors();
+  setStrokeWeights();
 }
 
 function draw() {
@@ -29,15 +30,17 @@ function draw() {
 
   drawHourHand();
   drawMinuteHand();
+  drawSecondHand();
 
   pop();
 }
 
 function windowResized() {
-  // Resize canvas and recalculate relative sizes
+  // Resize canvas and recalculate relative sizes and stroke weights
 
   resizeCanvas(windowWidth, windowHeight);
   setSizes();
+  setStrokeWeights();
 }
 
 function setSizes() {
@@ -52,22 +55,24 @@ function setSizes() {
   }
 }
 
-function setColorsAndWeights() {
-  // Set the initial colors and stroke weights
+function setColors() {
+  // Set the initial colors
 
   backgroundColor = color(0, 0, 0);
 
   hourScaleColor = color(0, 0, 100);
-  hourScaleStrokeWeight = 5;
-
   minuteScaleColor = color(0, 0, 100);
-  minuteScaleStrokeWeight = 1;
-
   hourHandColor = color(0, 0, 50);
-  hourHandStrokeWeight = 20;
-
   minuteHandColor = color(0, 0, 100);
-  minuteHandStrokeWeight = 10;
+  secondHandColor = color(45, 100, 100);
+}
+
+function setStrokeWeights() {
+  hourScaleStrokeWeight = longestSide / 100;
+  minuteScaleStrokeWeight = longestSide / 400;
+  hourHandStrokeWeight = longestSide / 50;
+  minuteHandStrokeWeight = longestSide / 80;
+  secondHandStrokeWeight = longestSide / 150;
 }
 
 function drawHourScale() {
@@ -133,6 +138,29 @@ function drawMinuteHand() {
   stroke(minuteHandColor);
   strokeWeight(minuteHandStrokeWeight);
   strokeCap(SQUARE);
+  line(0, 0, clockRadius - longestSide / 15, 0);
+
+  pop();
+}
+
+function drawSecondHand() {
+  push();
+
+  // Get the current millisecond using vanilla JavaScript because p5.js does not offer the current millisecond
+
+  var date = new Date();
+  var currentMillisecond = date.getMilliseconds();
+
+  // Set the rotation based on the current second and the current millisecond (to move the second hand smoothly between seconds)
+
+  var rotation = map(second(), 0, 60, 0, 360) + map(currentMillisecond, 0, 1000, 0, 360 / 60);
+
+  rotate(rotation);
+
+  // Draw the second hand
+
+  stroke(secondHandColor);
+  strokeWeight(secondHandStrokeWeight);
   line(0, 0, clockRadius - longestSide / 15, 0);
 
   pop();
