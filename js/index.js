@@ -28,6 +28,7 @@ function draw() {
   drawMinuteScale();
 
   drawHourHand();
+  drawMinuteHand();
 
   pop();
 }
@@ -64,6 +65,9 @@ function setColorsAndWeights() {
 
   hourHandColor = color(0, 0, 50);
   hourHandStrokeWeight = 20;
+
+  minuteHandColor = color(0, 0, 100);
+  minuteHandStrokeWeight = 10;
 }
 
 function drawHourScale() {
@@ -111,6 +115,25 @@ function drawHourHand() {
   strokeWeight(hourHandStrokeWeight);
   strokeCap(SQUARE);
   line(0, 0, clockRadius - longestSide / 8, 0);
+
+  pop();
+}
+
+function drawMinuteHand() {
+  push();
+
+  // Set the rotation based on the current minute and the current second (to move the minute hand smoothly between minutes)
+
+  var rotation = map(minute(), 0, 60, 0, 360) + map(second(), 0, 60, 0, 360 / 60);
+
+  rotate(rotation);
+
+  // Draw the minute hand
+
+  stroke(minuteHandColor);
+  strokeWeight(minuteHandStrokeWeight);
+  strokeCap(SQUARE);
+  line(0, 0, clockRadius - longestSide / 15, 0);
 
   pop();
 }
