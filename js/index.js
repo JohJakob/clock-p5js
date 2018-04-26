@@ -44,7 +44,7 @@ function windowResized() {
 }
 
 function setSizes() {
-  // Set the clock radius based on the longest side
+  // Set the clock radius based on the longest screen side
 
   if (width < height) {
     clockRadius = width / 2 - width / 10;
