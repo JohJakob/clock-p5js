@@ -2,7 +2,7 @@
 
 var backgroundColor, hourScaleColor, minuteScaleColor, hourHandColor, minuteHandColor, secondHandColor;
 var hourScaleStrokeWeight, minuteScaleStrokeWeight, hourHandStrokeWeight, minuteHandStrokeWeight, secondHandStrokeWeight;
-var clockSize, longestSide;
+var clockRadius, longestSide;
 
 function setup() {
   // Create canvas and set modes
@@ -27,6 +27,8 @@ function draw() {
   drawHourScale();
   drawMinuteScale();
 
+  drawHourHand();
+
   pop();
 }
 
@@ -38,13 +40,13 @@ function windowResized() {
 }
 
 function setSizes() {
-  // Set the clock size based on the longest side
+  // Set the clock radius based on the longest side
 
   if (width < height) {
-    clockSize = width / 2 - width / 10;
+    clockRadius = width / 2 - width / 10;
     longestSide = width;
   } else {
-    clockSize = height / 2 - height / 10;
+    clockRadius = height / 2 - height / 10;
     longestSide = height;
   }
 }
@@ -52,13 +54,16 @@ function setSizes() {
 function setColorsAndWeights() {
   // Set the initial colors and stroke weights
 
-  backgroundColor = color(0);
+  backgroundColor = color(0, 0, 0);
 
-  hourScaleColor = color(255);
+  hourScaleColor = color(0, 0, 100);
   hourScaleStrokeWeight = 5;
 
-  minuteScaleColor = color(255);
+  minuteScaleColor = color(0, 0, 100);
   minuteScaleStrokeWeight = 1;
+
+  hourHandColor = color(0, 0, 50);
+  hourHandStrokeWeight = 20;
 }
 
 function drawHourScale() {
@@ -69,7 +74,7 @@ function drawHourScale() {
   for (var i = 0; i < 12; i++) {
     stroke(hourScaleColor);
     strokeWeight(hourScaleStrokeWeight);
-    line(clockSize, 0, clockSize - longestSide / 20, 0);
+    line(clockRadius, 0, clockRadius - longestSide / 20, 0);
     rotate(30);
   }
 
@@ -84,9 +89,28 @@ function drawMinuteScale() {
   for (var i = 0; i < 60; i++) {
     stroke(minuteScaleColor);
     strokeWeight(minuteScaleStrokeWeight);
-    line(clockSize, 0, clockSize - longestSide / 40, 0);
+    line(clockRadius, 0, clockRadius - longestSide / 40, 0);
     rotate(6);
   }
+
+  pop();
+}
+
+function drawHourHand() {
+  push();
+
+  // Set the rotation based on the current hour and the current minute (to move the hour hand smoothly between hours)
+
+  var rotation = map(hour(), 0, 24, 0, 360 * 2) + map(minute(), 0, 60, 0, 360 / 12);
+
+  rotate(rotation);
+  
+  // Draw the hour hand
+
+  stroke(hourHandColor);
+  strokeWeight(hourHandStrokeWeight);
+  strokeCap(SQUARE);
+  line(0, 0, clockRadius - longestSide / 8, 0);
 
   pop();
 }
