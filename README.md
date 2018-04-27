@@ -1,4 +1,4 @@
-<img src="assets/clock.png" style="margin: 0 auto; max-width: 300px; display: block">
+<img src="assets/clock.png" width="300" style="margin: 0 auto; display: block">
 
 # clock-p5js
 
