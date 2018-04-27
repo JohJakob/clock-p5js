@@ -163,5 +163,16 @@ function drawSecondHand() {
   strokeWeight(secondHandStrokeWeight);
   line(0, 0, clockRadius - longestSide / 15, 0);
 
+  // Draw the second hand mount
+
+  strokeWeight(secondHandStrokeWeight * 1.5);
+
+  line(0, 0, -1 * (clockRadius - longestSide / 3), 0);
+
+  fill(backgroundColor);
+  strokeWeight(secondHandStrokeWeight);
+
+  ellipse(0, 0, longestSide / 50, longestSide / 50);
+
   pop();
 }
