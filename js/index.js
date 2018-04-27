@@ -48,7 +48,7 @@ function windowResized() {
 }
 
 function setSizes() {
-	// Set the clock radius based on the longest screen side
+	// Set clock radius based on longest screen side
 
 	if (width < height) {
 		clockRadius = width / 2 - width / 10;
@@ -58,7 +58,7 @@ function setSizes() {
 }
 
 function setColors() {
-	// Set the initial colors
+	// Set initial colors
 
 	backgroundColor = color(0, 0, 0);
 
@@ -80,7 +80,7 @@ function setStrokeWeights() {
 function drawHourScale() {
 	push();
 
-	// Draw 12 lines as the hour scale
+	// Draw 12 lines as hour scale
 
 	for (var i = 0; i < 12; i++) {
 		stroke(hourScaleColor);
@@ -95,7 +95,7 @@ function drawHourScale() {
 function drawMinuteScale() {
 	push();
 
-	// Draw 60 lines as the minute scale
+	// Draw 60 lines as minute scale
 
 	for (var i = 0; i < 60; i++) {
 		stroke(minuteScaleColor);
@@ -110,13 +110,13 @@ function drawMinuteScale() {
 function drawHourHand() {
 	push();
 
-	// Set the rotation based on the current hour and the current minute (to move the hour hand smoothly between hours)
+	// Set rotation based on current hour and current minute (to move hour hand smoothly between hours)
 
 	var rotation = map(hour(), 0, 24, 0, 360 * 2) + map(minute(), 0, 60, 0, 360 / 12);
 
 	rotate(rotation);
 
-	// Draw the hour hand
+	// Draw hour hand
 
 	stroke(hourHandColor);
 	strokeWeight(hourHandStrokeWeight);
@@ -129,13 +129,13 @@ function drawHourHand() {
 function drawMinuteHand() {
 	push();
 
-	// Set the rotation based on the current minute and the current second (to move the minute hand smoothly between minutes)
+	// Set rotation based on current minute and current second (to move minute hand smoothly between minutes)
 
 	var rotation = map(minute(), 0, 60, 0, 360) + map(second(), 0, 60, 0, 360 / 60);
 
 	rotate(rotation);
 
-	// Draw the minute hand
+	// Draw minute hand
 
 	stroke(minuteHandColor);
 	strokeWeight(minuteHandStrokeWeight);
@@ -148,24 +148,24 @@ function drawMinuteHand() {
 function drawSecondHand() {
 	push();
 
-	// Get the current millisecond using vanilla JavaScript because p5.js does not offer the current millisecond
+	// Get current millisecond using vanilla JavaScript because p5.js does not offer current millisecond
 
 	var date = new Date();
 	var currentMillisecond = date.getMilliseconds();
 
-	// Set the rotation based on the current second and the current millisecond (to move the second hand smoothly between seconds)
+	// Set rotation based on current second and current millisecond (to move second hand smoothly between seconds)
 
 	var rotation = map(second(), 0, 60, 0, 360) + map(currentMillisecond, 0, 1000, 0, 360 / 60);
 
 	rotate(rotation);
 
-	// Draw the second hand
+	// Draw second hand
 
 	stroke(secondHandColor);
 	strokeWeight(secondHandStrokeWeight);
 	line(0, 0, clockRadius - clockRadius / 6, 0);
 
-	// Draw the second hand mount
+	// Draw second hand mount
 
 	strokeWeight(secondHandStrokeWeight * 1.5);
 
@@ -186,21 +186,21 @@ function getPosition(position) {
 }
 
 function getSunTimes(data) {
-	// Set the sun times from JSON data
+	// Set sun times from JSON data
 
 	sunrise = data.results.sunrise;
 	sunset = data.results.sunset;
 
-	// Create dates from the date strings
+	// Create dates from date strings
 
 	sunriseDate = new Date(sunrise);
 	sunsetDate = new Date(sunset);
 
-	// Get the current date and time
+	// Get current date and time
 
 	var date = new Date();
 
-	// Compare the sunrise, the current date and the sunset and set the clock's colors accordingly (night -> dark, day -> light)
+	// Compare sunrise, current date and sunset and set clock's colors accordingly (night -> dark, day -> light)
 
 	if (date > sunriseDate && date < sunsetDate) {
 		backgroundColor = color(0, 0, 255);
