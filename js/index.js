@@ -48,10 +48,8 @@ function setSizes() {
 
   if (width < height) {
     clockRadius = width / 2 - width / 10;
-    longestSide = width;
   } else {
     clockRadius = height / 2 - height / 10;
-    longestSide = height;
   }
 }
 
@@ -68,11 +66,11 @@ function setColors() {
 }
 
 function setStrokeWeights() {
-  hourScaleStrokeWeight = longestSide / 100;
-  minuteScaleStrokeWeight = longestSide / 400;
-  hourHandStrokeWeight = longestSide / 50;
-  minuteHandStrokeWeight = longestSide / 80;
-  secondHandStrokeWeight = longestSide / 150;
+  hourScaleStrokeWeight = clockRadius / 40;
+  minuteScaleStrokeWeight = clockRadius / 120;
+  hourHandStrokeWeight = clockRadius / 20;
+  minuteHandStrokeWeight = clockRadius / 40;
+  secondHandStrokeWeight = clockRadius / 60;
 }
 
 function drawHourScale() {
@@ -83,7 +81,7 @@ function drawHourScale() {
   for (var i = 0; i < 12; i++) {
     stroke(hourScaleColor);
     strokeWeight(hourScaleStrokeWeight);
-    line(clockRadius, 0, clockRadius - longestSide / 20, 0);
+    line(clockRadius, 0, clockRadius - clockRadius / 8, 0);
     rotate(30);
   }
 
@@ -98,7 +96,7 @@ function drawMinuteScale() {
   for (var i = 0; i < 60; i++) {
     stroke(minuteScaleColor);
     strokeWeight(minuteScaleStrokeWeight);
-    line(clockRadius, 0, clockRadius - longestSide / 40, 0);
+    line(clockRadius, 0, clockRadius - clockRadius / 16, 0);
     rotate(6);
   }
 
@@ -119,7 +117,7 @@ function drawHourHand() {
   stroke(hourHandColor);
   strokeWeight(hourHandStrokeWeight);
   strokeCap(SQUARE);
-  line(0, 0, clockRadius - longestSide / 8, 0);
+  line(0, 0, clockRadius - clockRadius / 3, 0);
 
   pop();
 }
@@ -138,7 +136,7 @@ function drawMinuteHand() {
   stroke(minuteHandColor);
   strokeWeight(minuteHandStrokeWeight);
   strokeCap(SQUARE);
-  line(0, 0, clockRadius - longestSide / 15, 0);
+  line(0, 0, clockRadius - clockRadius / 6, 0);
 
   pop();
 }
@@ -161,18 +159,18 @@ function drawSecondHand() {
 
   stroke(secondHandColor);
   strokeWeight(secondHandStrokeWeight);
-  line(0, 0, clockRadius - longestSide / 15, 0);
+  line(0, 0, clockRadius - clockRadius / 6, 0);
 
   // Draw the second hand mount
 
   strokeWeight(secondHandStrokeWeight * 1.5);
 
-  line(0, 0, -1 * (clockRadius - longestSide / 3), 0);
+  line(0, 0, -clockRadius / 8, 0);
 
   fill(backgroundColor);
   strokeWeight(secondHandStrokeWeight);
 
-  ellipse(0, 0, longestSide / 50, longestSide / 50);
+  ellipse(0, 0, clockRadius / 16, clockRadius / 16);
 
   pop();
 }
