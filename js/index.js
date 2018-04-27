@@ -86,7 +86,23 @@ function drawHourScale() {
 		stroke(hourScaleColor);
 		strokeWeight(hourScaleStrokeWeight);
 		line(clockRadius, 0, clockRadius - clockRadius / 8, 0);
+
 		rotate(30);
+
+		push();
+
+		// Draw scale labels
+
+		translate(clockRadius - clockRadius / 4, 0);
+		rotate(-30 * (i + 1) + 90);
+
+		fill(hourScaleColor);
+		noStroke();
+		textSize(64);
+		textAlign(CENTER, CENTER);
+		text(i + 1, 0, 0);
+
+		pop();
 	}
 
 	pop();
