@@ -1,3 +1,5 @@
+<img src="assets/clock.png" style="margin: 0 auto; width: 300px; display: block">
+
 # clock-p5js
 
 _A clock made with [p5.js](https://p5js.org) for the Interaction Design course in my second semester at [Anhalt University of Applied Sciences](https://hs-anhalt.de)_
