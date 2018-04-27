@@ -3,174 +3,211 @@
 var backgroundColor, hourScaleColor, minuteScaleColor, hourHandColor, minuteHandColor, secondHandColor;
 var hourScaleStrokeWeight, minuteScaleStrokeWeight, hourHandStrokeWeight, minuteHandStrokeWeight, secondHandStrokeWeight;
 var clockRadius, longestSide;
+var jsonData;
+var sunrise, sunset, sunriseDate, sunsetDate;
 
 function setup() {
-  // Create canvas and set modes
+	// Create canvas and set modes
 
-  createCanvas(windowWidth, windowHeight);
-  colorMode(HSB);
-  angleMode(DEGREES);
+	createCanvas(windowWidth, windowHeight);
+	colorMode(HSB);
+	angleMode(DEGREES);
 
-  setSizes();
-  setColors();
-  setStrokeWeights();
+	setSizes();
+	setColors();
+	setStrokeWeights();
+
+	getCurrentPosition(getPosition);
 }
 
 function draw() {
-  background(backgroundColor);
+	background(backgroundColor);
 
-  // Transform coordinate system
+	// Transform coordinate system
 
-  push();
-  translate(width / 2, height / 2);
-  rotate(-90);
+	push();
+	translate(width / 2, height / 2);
+	rotate(-90);
 
-  drawHourScale();
-  drawMinuteScale();
+	drawHourScale();
+	drawMinuteScale();
 
-  drawHourHand();
-  drawMinuteHand();
-  drawSecondHand();
+	drawHourHand();
+	drawMinuteHand();
+	drawSecondHand();
 
-  pop();
+	pop();
 }
 
 function windowResized() {
-  // Resize canvas and recalculate relative sizes and stroke weights
+	// Resize canvas and recalculate relative sizes and stroke weights
 
-  resizeCanvas(windowWidth, windowHeight);
-  setSizes();
-  setStrokeWeights();
+	resizeCanvas(windowWidth, windowHeight);
+	setSizes();
+	setStrokeWeights();
 }
 
 function setSizes() {
-  // Set the clock radius based on the longest screen side
+	// Set the clock radius based on the longest screen side
 
-  if (width < height) {
-    clockRadius = width / 2 - width / 10;
-  } else {
-    clockRadius = height / 2 - height / 10;
-  }
+	if (width < height) {
+		clockRadius = width / 2 - width / 10;
+	} else {
+		clockRadius = height / 2 - height / 10;
+	}
 }
 
 function setColors() {
-  // Set the initial colors
+	// Set the initial colors
 
-  backgroundColor = color(0, 0, 0);
+	backgroundColor = color(0, 0, 0);
 
-  hourScaleColor = color(0, 0, 100);
-  minuteScaleColor = color(0, 0, 100);
-  hourHandColor = color(0, 0, 50);
-  minuteHandColor = color(0, 0, 100);
-  secondHandColor = color(45, 100, 100);
+	hourScaleColor = color(0, 0, 100);
+	minuteScaleColor = color(0, 0, 100);
+	hourHandColor = color(0, 0, 50);
+	minuteHandColor = color(0, 0, 100);
+	secondHandColor = color(45, 100, 100);
 }
 
 function setStrokeWeights() {
-  hourScaleStrokeWeight = clockRadius / 40;
-  minuteScaleStrokeWeight = clockRadius / 120;
-  hourHandStrokeWeight = clockRadius / 20;
-  minuteHandStrokeWeight = clockRadius / 40;
-  secondHandStrokeWeight = clockRadius / 60;
+	hourScaleStrokeWeight = clockRadius / 40;
+	minuteScaleStrokeWeight = clockRadius / 120;
+	hourHandStrokeWeight = clockRadius / 20;
+	minuteHandStrokeWeight = clockRadius / 40;
+	secondHandStrokeWeight = clockRadius / 60;
 }
 
 function drawHourScale() {
-  push();
+	push();
 
-  // Draw 12 lines as the hour scale
+	// Draw 12 lines as the hour scale
 
-  for (var i = 0; i < 12; i++) {
-    stroke(hourScaleColor);
-    strokeWeight(hourScaleStrokeWeight);
-    line(clockRadius, 0, clockRadius - clockRadius / 8, 0);
-    rotate(30);
-  }
+	for (var i = 0; i < 12; i++) {
+		stroke(hourScaleColor);
+		strokeWeight(hourScaleStrokeWeight);
+		line(clockRadius, 0, clockRadius - clockRadius / 8, 0);
+		rotate(30);
+	}
 
-  pop();
+	pop();
 }
 
 function drawMinuteScale() {
-  push();
+	push();
 
-  // Draw 60 lines as the minute scale
+	// Draw 60 lines as the minute scale
 
-  for (var i = 0; i < 60; i++) {
-    stroke(minuteScaleColor);
-    strokeWeight(minuteScaleStrokeWeight);
-    line(clockRadius, 0, clockRadius - clockRadius / 16, 0);
-    rotate(6);
-  }
+	for (var i = 0; i < 60; i++) {
+		stroke(minuteScaleColor);
+		strokeWeight(minuteScaleStrokeWeight);
+		line(clockRadius, 0, clockRadius - clockRadius / 16, 0);
+		rotate(6);
+	}
 
-  pop();
+	pop();
 }
 
 function drawHourHand() {
-  push();
+	push();
 
-  // Set the rotation based on the current hour and the current minute (to move the hour hand smoothly between hours)
+	// Set the rotation based on the current hour and the current minute (to move the hour hand smoothly between hours)
 
-  var rotation = map(hour(), 0, 24, 0, 360 * 2) + map(minute(), 0, 60, 0, 360 / 12);
+	var rotation = map(hour(), 0, 24, 0, 360 * 2) + map(minute(), 0, 60, 0, 360 / 12);
 
-  rotate(rotation);
-  
-  // Draw the hour hand
+	rotate(rotation);
 
-  stroke(hourHandColor);
-  strokeWeight(hourHandStrokeWeight);
-  strokeCap(SQUARE);
-  line(0, 0, clockRadius - clockRadius / 3, 0);
+	// Draw the hour hand
 
-  pop();
+	stroke(hourHandColor);
+	strokeWeight(hourHandStrokeWeight);
+	strokeCap(SQUARE);
+	line(0, 0, clockRadius - clockRadius / 3, 0);
+
+	pop();
 }
 
 function drawMinuteHand() {
-  push();
+	push();
 
-  // Set the rotation based on the current minute and the current second (to move the minute hand smoothly between minutes)
+	// Set the rotation based on the current minute and the current second (to move the minute hand smoothly between minutes)
 
-  var rotation = map(minute(), 0, 60, 0, 360) + map(second(), 0, 60, 0, 360 / 60);
+	var rotation = map(minute(), 0, 60, 0, 360) + map(second(), 0, 60, 0, 360 / 60);
 
-  rotate(rotation);
+	rotate(rotation);
 
-  // Draw the minute hand
+	// Draw the minute hand
 
-  stroke(minuteHandColor);
-  strokeWeight(minuteHandStrokeWeight);
-  strokeCap(SQUARE);
-  line(0, 0, clockRadius - clockRadius / 6, 0);
+	stroke(minuteHandColor);
+	strokeWeight(minuteHandStrokeWeight);
+	strokeCap(SQUARE);
+	line(0, 0, clockRadius - clockRadius / 6, 0);
 
-  pop();
+	pop();
 }
 
 function drawSecondHand() {
-  push();
+	push();
 
-  // Get the current millisecond using vanilla JavaScript because p5.js does not offer the current millisecond
+	// Get the current millisecond using vanilla JavaScript because p5.js does not offer the current millisecond
 
-  var date = new Date();
-  var currentMillisecond = date.getMilliseconds();
+	var date = new Date();
+	var currentMillisecond = date.getMilliseconds();
 
-  // Set the rotation based on the current second and the current millisecond (to move the second hand smoothly between seconds)
+	// Set the rotation based on the current second and the current millisecond (to move the second hand smoothly between seconds)
 
-  var rotation = map(second(), 0, 60, 0, 360) + map(currentMillisecond, 0, 1000, 0, 360 / 60);
+	var rotation = map(second(), 0, 60, 0, 360) + map(currentMillisecond, 0, 1000, 0, 360 / 60);
 
-  rotate(rotation);
+	rotate(rotation);
 
-  // Draw the second hand
+	// Draw the second hand
 
-  stroke(secondHandColor);
-  strokeWeight(secondHandStrokeWeight);
-  line(0, 0, clockRadius - clockRadius / 6, 0);
+	stroke(secondHandColor);
+	strokeWeight(secondHandStrokeWeight);
+	line(0, 0, clockRadius - clockRadius / 6, 0);
 
-  // Draw the second hand mount
+	// Draw the second hand mount
 
-  strokeWeight(secondHandStrokeWeight * 1.5);
+	strokeWeight(secondHandStrokeWeight * 1.5);
 
-  line(0, 0, -clockRadius / 8, 0);
+	line(0, 0, -clockRadius / 8, 0);
 
-  fill(backgroundColor);
-  strokeWeight(secondHandStrokeWeight);
+	fill(backgroundColor);
+	strokeWeight(secondHandStrokeWeight);
 
-  ellipse(0, 0, clockRadius / 16, clockRadius / 16);
+	ellipse(0, 0, clockRadius / 16, clockRadius / 16);
 
-  pop();
+	pop();
+}
+
+function getPosition(position) {
+	// Load JSON data from Sunrise Sunset API and run getSunTimes()
+
+	loadJSON('https://api.sunrise-sunset.org/json?lat=' + position.latitude + '&lng=' + position.longitude + '&formatted=0', getSunTimes);
+}
+
+function getSunTimes(data) {
+	// Set the sun times from JSON data
+
+	sunrise = data.results.sunrise;
+	sunset = data.results.sunset;
+
+	// Create dates from the date strings
+
+	sunriseDate = new Date(sunrise);
+	sunsetDate = new Date(sunset);
+
+	// Get the current date and time
+
+	var date = new Date();
+
+	// Compare the sunrise, the current date and the sunset and set the clock's colors accordingly (night -> dark, day -> light)
+
+	if (date > sunriseDate && date < sunsetDate) {
+		backgroundColor = color(0, 0, 255);
+
+		hourScaleColor = color(0, 0, 0);
+		minuteScaleColor = color(0, 0, 0);
+		hourHandColor = color(0, 0, 50);
+		minuteHandColor = color(0, 0, 0);
+	}
 }
