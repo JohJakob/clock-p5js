@@ -1,7 +1,7 @@
 // Declare global variables
 
-var backgroundColor, hourScaleColor, minuteScaleColor, hourHandColor, minuteHandColor, secondHandColor;
-var hourScaleStrokeWeight, minuteScaleStrokeWeight, hourHandStrokeWeight, minuteHandStrokeWeight, secondHandStrokeWeight;
+var backgroundColor, dayDisplayColor, dayDisplayTextColor, hourScaleColor, minuteScaleColor, hourHandColor, minuteHandColor, secondHandColor;
+var dayDisplayStrokeWeight, hourScaleStrokeWeight, minuteScaleStrokeWeight, hourHandStrokeWeight, minuteHandStrokeWeight, secondHandStrokeWeight;
 var clockRadius, longestSide;
 var jsonData;
 var sunrise, sunset, sunriseDate, sunsetDate;
@@ -27,6 +27,9 @@ function draw() {
 
 	push();
 	translate(width / 2, height / 2);
+
+	drawDayDisplay();
+
 	rotate(-90);
 
 	drawHourScale();
@@ -62,6 +65,8 @@ function setColors() {
 
 	backgroundColor = color(0, 0, 0);
 
+	dayDisplayColor = color(0, 0, 40);
+	dayDisplayTextColor = color(0, 0, 100);
 	hourScaleColor = color(0, 0, 100);
 	minuteScaleColor = color(0, 0, 100);
 	hourHandColor = color(0, 0, 50);
@@ -70,11 +75,32 @@ function setColors() {
 }
 
 function setStrokeWeights() {
+	dayDisplayStrokeWeight = clockRadius / 80;
 	hourScaleStrokeWeight = clockRadius / 40;
 	minuteScaleStrokeWeight = clockRadius / 120;
 	hourHandStrokeWeight = clockRadius / 20;
 	minuteHandStrokeWeight = clockRadius / 40;
 	secondHandStrokeWeight = clockRadius / 60;
+}
+
+function drawDayDisplay() {
+	push();
+
+	translate(clockRadius / 2.5, 0);
+
+	noFill();
+	stroke(dayDisplayColor);
+	strokeWeight(dayDisplayStrokeWeight);
+	rectMode(CENTER);
+	rect(0, 0, clockRadius / 4, clockRadius / 5, clockRadius / 30);
+
+	fill(dayDisplayTextColor);
+	noStroke();
+	textAlign(CENTER, CENTER);
+	textSize(clockRadius / 8);
+	text(day(), 0, 0);
+
+	pop();
 }
 
 function drawHourScale() {
@@ -98,7 +124,7 @@ function drawHourScale() {
 
 		fill(hourScaleColor);
 		noStroke();
-		textSize(64);
+		textSize(clockRadius / 6);
 		textAlign(CENTER, CENTER);
 		text(i + 1, 0, 0);
 
@@ -221,6 +247,7 @@ function getSunTimes(data) {
 	if (date > sunriseDate && date < sunsetDate) {
 		backgroundColor = color(0, 0, 255);
 
+		dayDisplayTextColor = color(0, 0, 0);
 		hourScaleColor = color(0, 0, 0);
 		minuteScaleColor = color(0, 0, 0);
 		hourHandColor = color(0, 0, 50);
