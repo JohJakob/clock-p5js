@@ -98,7 +98,7 @@ function drawDayDisplay() {
 	noStroke();
 	textAlign(CENTER, CENTER);
 	textSize(clockRadius / 8);
-	text(day(), 0, 0);
+	text(day(), 0, clockRadius / 200);
 
 	pop();
 }
