@@ -3,6 +3,8 @@
 var backgroundColor, dayDisplayColor, dayDisplayTextColor, hourScaleColor, minuteScaleColor, hourHandColor, minuteHandColor, secondHandColor;
 var dayDisplayStrokeWeight, hourScaleStrokeWeight, minuteScaleStrokeWeight, hourHandStrokeWeight, minuteHandStrokeWeight, secondHandStrokeWeight;
 var clockRadius, longestSide;
+var isDay;
+var dayToCheck;
 var sunrise, sunset, sunriseDate, sunsetDate;
 var displayHourScaleLabels, displayDay;
 
@@ -23,6 +25,10 @@ function setup() {
 
 	displayHourScaleLabels = true;
 	displayDay = true;
+
+	var date = new Date();
+
+	dayToCheck = date.toISOString().substring(0, 10);
 
 	// Retrieve current position using p5.geolocation
 
@@ -70,11 +76,23 @@ function keyPressed() {
 			// Keycode 72 is key H
 
 			displayHourScaleLabels = !displayHourScaleLabels;
+
+			if (displayHourScaleLabels) {
+				print("Key H has been pressed. Enabling hour scale labels");
+			} else {
+				print("Key H has been pressed. Disabling hour scale labels");
+			}
 			break;
 		case 68:
 			// Keycode 68 is key D
 
 			displayDay = !displayDay;
+
+			if (displayDay) {
+				print("Key D has been pressed. Enabling day display");
+			} else {
+				print("Key D has been pressed. Disabling day display");
+			}
 			break;
 		default:
 			break;
@@ -261,7 +279,7 @@ function getLocation(position) {
 
 	// Load JSON data from Sunrise Sunset API and run getSunTimes()
 
-	var apiURL = 'https://api.sunrise-sunset.org/json?lat=' + position.latitude + '&lng=' + position.longitude + '&formatted=0';
+	var apiURL = 'https://api.sunrise-sunset.org/json?lat=' + position.latitude + '&lng=' + position.longitude + '&date=' + dayToCheck + '&formatted=0';
 
 	print('Loading JSON response from ' + apiURL);
 
@@ -282,18 +300,86 @@ function getSunTimes(data) {
 	print('Sunrise at current location: ' + sunriseDate);
 	print('Sunset at current location: ' + sunsetDate);
 
+	// Update colors
+
+	updateColors();
+
+	// Check time and compare it to sunrise and sunset times
+
+	checkTime(updateColors);
+}
+
+function checkTime(callback) {
+	(function loop() {
+		print("Checking the current time");
+
+		var date = new Date();
+
+		if (date > sunsetDate) {
+			// Get date for tomorrow
+
+			var tomorrow = new Date();
+
+			tomorrow.setDate(date.getDate() + 1);
+			dayToCheck = tomorrow.toISOString().substring(0, 10);
+
+			print("The sun has set. Updating location and getting sunrise and sunset times for tomorrow:" + dayToCheck);
+
+			// Update location and get sunrise and sunset times for tomorrow
+
+			getCurrentPosition(getLocation);
+		}
+
+		if ((!isDay && (date > sunriseDate || date < sunsetDate)) || (isDay && (date < sunriseDate || date > sunsetDate))) {
+			print("Sunrise/Sunset happened. Running the callback function");
+
+			// Run callback function that was given as argument
+
+			callback();
+		}
+
+		// Call function loop every exact minute
+
+		date = new Date();
+
+		var delay = 60000 - (date % 60000);
+
+		setTimeout(loop, delay);
+	})();
+}
+
+function updateColors() {
 	var date = new Date();
 
 	// Compare current date with sunrise and sunset and set clock's colors accordingly (night -> dark, day -> light)
 
 	if (date < sunriseDate || date > sunsetDate) {
+		print("Enabling night mode");
+
+		isDay = false;
+
 		backgroundColor = color(0, 0, 0);
 
+		dayDisplayColor = color(0, 0, 40);
 		dayDisplayTextColor = color(0, 0, 100);
 		hourScaleColor = color(0, 0, 100);
 		minuteScaleColor = color(0, 0, 100);
 		hourHandColor = color(0, 0, 50);
 		minuteHandColor = color(0, 0, 100);
+		secondHandColor = color(45, 100, 100);
+	} else {
+		print("Disabling night mode");
+
+		isDay = true;
+
+		backgroundColor = color(0, 0, 255);
+
+		dayDisplayColor = color(0, 0, 40);
+		dayDisplayTextColor = color(0, 0, 0);
+		hourScaleColor = color(0, 0, 0);
+		minuteScaleColor = color(0, 0, 0);
+		hourHandColor = color(0, 0, 50);
+		minuteHandColor = color(0, 0, 0);
 		secondHandColor = color(45, 100, 100);
 	}
 }
