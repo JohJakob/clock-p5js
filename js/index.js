@@ -13,12 +13,18 @@ function setup() {
 	colorMode(HSB);
 	angleMode(DEGREES);
 
+	// Initialize sketch
+
 	setSizes();
 	setColors();
 	setStrokeWeights();
 
+	// Hour scale labels and day display should be visible by default
+
 	displayHourScaleLabels = true;
 	displayDay = true;
+
+	// Retrieve current position using p5.geolocation
 
 	getCurrentPosition(getLocation);
 }
