@@ -222,9 +222,17 @@ function drawSecondHand() {
 }
 
 function getPosition(position) {
+	print('Geolocation is available');
+	print('Current latitude: ' + position.latitude);
+	print('Current longitude: ' + position.longitude);
+
 	// Load JSON data from Sunrise Sunset API and run getSunTimes()
 
-	loadJSON('https://api.sunrise-sunset.org/json?lat=' + position.latitude + '&lng=' + position.longitude + '&formatted=0', getSunTimes);
+	var apiURL = 'https://api.sunrise-sunset.org/json?lat=' + position.latitude + '&lng=' + position.longitude + '&formatted=0';
+
+	print('Loading JSON response from ' + apiURL);
+
+	loadJSON(apiURL, getSunTimes);
 }
 
 function getSunTimes(data) {
@@ -238,13 +246,16 @@ function getSunTimes(data) {
 	sunriseDate = new Date(sunrise);
 	sunsetDate = new Date(sunset);
 
+	print('Sunrise at current location: ' + sunriseDate);
+	print('Sunset at current location: ' + sunsetDate);
+
 	// Get current date and time
 
 	var date = new Date();
 
 	// Compare sunrise, current date and sunset and set clock's colors accordingly (night -> dark, day -> light)
 
-	if (date < sunriseDate && date > sunsetDate) {
+	if (date < sunriseDate || date > sunsetDate) {
 		backgroundColor = color(0, 0, 0);
 
 		dayDisplayTextColor = color(0, 0, 100);
