@@ -63,14 +63,14 @@ function setSizes() {
 function setColors() {
 	// Set initial colors
 
-	backgroundColor = color(0, 0, 0);
+	backgroundColor = color(0, 0, 255);
 
 	dayDisplayColor = color(0, 0, 40);
-	dayDisplayTextColor = color(0, 0, 100);
-	hourScaleColor = color(0, 0, 100);
-	minuteScaleColor = color(0, 0, 100);
+	dayDisplayTextColor = color(0, 0, 0);
+	hourScaleColor = color(0, 0, 0);
+	minuteScaleColor = color(0, 0, 0);
 	hourHandColor = color(0, 0, 50);
-	minuteHandColor = color(0, 0, 100);
+	minuteHandColor = color(0, 0, 0);
 	secondHandColor = color(45, 100, 100);
 }
 
@@ -244,13 +244,14 @@ function getSunTimes(data) {
 
 	// Compare sunrise, current date and sunset and set clock's colors accordingly (night -> dark, day -> light)
 
-	if (date > sunriseDate && date < sunsetDate) {
-		backgroundColor = color(0, 0, 255);
+	if (date < sunriseDate && date > sunsetDate) {
+		backgroundColor = color(0, 0, 0);
 
-		dayDisplayTextColor = color(0, 0, 0);
-		hourScaleColor = color(0, 0, 0);
-		minuteScaleColor = color(0, 0, 0);
+		dayDisplayTextColor = color(0, 0, 100);
+		hourScaleColor = color(0, 0, 100);
+		minuteScaleColor = color(0, 0, 100);
 		hourHandColor = color(0, 0, 50);
-		minuteHandColor = color(0, 0, 0);
+		minuteHandColor = color(0, 0, 100);
+		secondHandColor = color(45, 100, 100);
 	}
 }
