@@ -5,6 +5,7 @@ var dayDisplayStrokeWeight, hourScaleStrokeWeight, minuteScaleStrokeWeight, hour
 var clockRadius, longestSide;
 var jsonData;
 var sunrise, sunset, sunriseDate, sunsetDate;
+var displayHourScaleLabels, displayDay;
 
 function setup() {
 	// Create canvas and set modes
@@ -17,6 +18,9 @@ function setup() {
 	setColors();
 	setStrokeWeights();
 
+	displayHourScaleLabels = true;
+	displayDay = true;
+
 	getCurrentPosition(getPosition);
 }
 
@@ -28,7 +32,9 @@ function draw() {
 	push();
 	translate(width / 2, height / 2);
 
-	drawDayDisplay();
+	if (displayDay) {
+		drawDayDisplay();
+	}
 
 	rotate(-90);
 
@@ -48,6 +54,25 @@ function windowResized() {
 	resizeCanvas(windowWidth, windowHeight);
 	setSizes();
 	setStrokeWeights();
+}
+
+function keyPressed() {
+	// Toggle 
+
+	switch (keyCode) {
+		case 72:
+			// Keycode 72 is key H
+
+			displayHourScaleLabels = !displayHourScaleLabels;
+			break;
+		case 68:
+			// Keycode 68 is key D
+
+			displayDay = !displayDay;
+			break;
+		default:
+			break;
+	}
 }
 
 function setSizes() {
@@ -115,20 +140,22 @@ function drawHourScale() {
 
 		rotate(30);
 
-		push();
+		if (displayHourScaleLabels) {
+			push();
 
-		// Draw scale labels
+			// Draw scale labels
 
-		translate(clockRadius - clockRadius / 4, 0);
-		rotate(-30 * (i + 1) + 90);
+			translate(clockRadius - clockRadius / 4, 0);
+			rotate(-30 * (i + 1) + 90);
 
-		fill(hourScaleColor);
-		noStroke();
-		textSize(clockRadius / 6);
-		textAlign(CENTER, CENTER);
-		text(i + 1, 0, 0);
+			fill(hourScaleColor);
+			noStroke();
+			textSize(clockRadius / 6);
+			textAlign(CENTER, CENTER);
+			text(i + 1, 0, 0);
 
-		pop();
+			pop();
+		}
 	}
 
 	pop();
