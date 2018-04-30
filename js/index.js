@@ -3,7 +3,6 @@
 var backgroundColor, dayDisplayColor, dayDisplayTextColor, hourScaleColor, minuteScaleColor, hourHandColor, minuteHandColor, secondHandColor;
 var dayDisplayStrokeWeight, hourScaleStrokeWeight, minuteScaleStrokeWeight, hourHandStrokeWeight, minuteHandStrokeWeight, secondHandStrokeWeight;
 var clockRadius, longestSide;
-var jsonData;
 var sunrise, sunset, sunriseDate, sunsetDate;
 var displayHourScaleLabels, displayDay;
 
