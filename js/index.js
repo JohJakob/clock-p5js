@@ -309,6 +309,42 @@ function getSunTimes(data) {
 	checkTime(updateColors);
 }
 
+function updateColors() {
+	var date = new Date();
+
+	// Compare current date with sunrise and sunset and set clock's colors accordingly (night -> dark, day -> light)
+
+	if (date < sunriseDate || date > sunsetDate) {
+		print("Enabling night mode");
+
+		isDay = false;
+
+		backgroundColor = color(0, 0, 0);
+
+		dayDisplayColor = color(0, 0, 40);
+		dayDisplayTextColor = color(0, 0, 100);
+		hourScaleColor = color(0, 0, 100);
+		minuteScaleColor = color(0, 0, 100);
+		hourHandColor = color(0, 0, 50);
+		minuteHandColor = color(0, 0, 100);
+		secondHandColor = color(45, 100, 100);
+	} else {
+		print("Disabling night mode");
+
+		isDay = true;
+
+		backgroundColor = color(0, 0, 255);
+
+		dayDisplayColor = color(0, 0, 40);
+		dayDisplayTextColor = color(0, 0, 0);
+		hourScaleColor = color(0, 0, 0);
+		minuteScaleColor = color(0, 0, 0);
+		hourHandColor = color(0, 0, 50);
+		minuteHandColor = color(0, 0, 0);
+		secondHandColor = color(45, 100, 100);
+	}
+}
+
 function checkTime(callback) {
 	(function loop() {
 		print("Checking the current time");
@@ -346,40 +382,4 @@ function checkTime(callback) {
 
 		setTimeout(loop, delay);
 	})();
-}
-
-function updateColors() {
-	var date = new Date();
-
-	// Compare current date with sunrise and sunset and set clock's colors accordingly (night -> dark, day -> light)
-
-	if (date < sunriseDate || date > sunsetDate) {
-		print("Enabling night mode");
-
-		isDay = false;
-
-		backgroundColor = color(0, 0, 0);
-
-		dayDisplayColor = color(0, 0, 40);
-		dayDisplayTextColor = color(0, 0, 100);
-		hourScaleColor = color(0, 0, 100);
-		minuteScaleColor = color(0, 0, 100);
-		hourHandColor = color(0, 0, 50);
-		minuteHandColor = color(0, 0, 100);
-		secondHandColor = color(45, 100, 100);
-	} else {
-		print("Disabling night mode");
-
-		isDay = true;
-
-		backgroundColor = color(0, 0, 255);
-
-		dayDisplayColor = color(0, 0, 40);
-		dayDisplayTextColor = color(0, 0, 0);
-		hourScaleColor = color(0, 0, 0);
-		minuteScaleColor = color(0, 0, 0);
-		hourHandColor = color(0, 0, 50);
-		minuteHandColor = color(0, 0, 0);
-		secondHandColor = color(45, 100, 100);
-	}
 }
