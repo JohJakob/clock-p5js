@@ -361,14 +361,14 @@ function checkTime(callback) {
 			tomorrow.setDate(date.getDate() + 1);
 			dayToCheck = tomorrow.toISOString().substring(0, 10);
 
-			print("The sun has set. Updating location and getting sunrise and sunset times for tomorrow:" + dayToCheck);
+			print("The sun has set. Updating location and getting sunrise and sunset times for tomorrow: " + dayToCheck);
 
 			// Update location and get sunrise and sunset times for tomorrow
 
 			getCurrentPosition(getLocation);
 		}
 
-		if ((!isDay && (date > sunriseDate || date < sunsetDate)) || (isDay && (date < sunriseDate || date > sunsetDate))) {
+		if ((!isDay && (date > sunriseDate && date < sunsetDate)) || (isDay && (date < sunriseDate))) {
 			print("Sunrise/Sunset happened. Running the callback function");
 
 			// Run callback function that was given as argument
