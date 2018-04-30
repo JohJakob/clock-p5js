@@ -15,3 +15,4 @@ Create a clock showing seconds, minutes and hours using the JavaScript library [
 - day display
 - night mode (using [p5.geolocation](https://github.com/bmoren/p5.geolocation) and [Sunrise Sunset API](https://sunrise-sunset.org/api))
 - toggle hour labels and day display
+- responsive interface
