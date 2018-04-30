@@ -21,7 +21,7 @@ function setup() {
 	displayHourScaleLabels = true;
 	displayDay = true;
 
-	getCurrentPosition(getPosition);
+	getCurrentPosition(getLocation);
 }
 
 function draw() {
@@ -248,7 +248,7 @@ function drawSecondHand() {
 	pop();
 }
 
-function getPosition(position) {
+function getLocation(position) {
 	print('Geolocation is available');
 	print('Current latitude: ' + position.latitude);
 	print('Current longitude: ' + position.longitude);
@@ -276,11 +276,9 @@ function getSunTimes(data) {
 	print('Sunrise at current location: ' + sunriseDate);
 	print('Sunset at current location: ' + sunsetDate);
 
-	// Get current date and time
-
 	var date = new Date();
 
-	// Compare sunrise, current date and sunset and set clock's colors accordingly (night -> dark, day -> light)
+	// Compare current date with sunrise and sunset and set clock's colors accordingly (night -> dark, day -> light)
 
 	if (date < sunriseDate || date > sunsetDate) {
 		backgroundColor = color(0, 0, 0);
