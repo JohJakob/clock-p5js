@@ -35,6 +35,7 @@ function draw() {
 	// Transform coordinate system
 
 	push();
+
 	translate(width / 2, height / 2);
 
 	if (displayDay) {
@@ -62,7 +63,7 @@ function windowResized() {
 }
 
 function keyPressed() {
-	// Toggle 
+	// Toggle hour scale labels and day display when specific keys have been pressed
 
 	switch (keyCode) {
 		case 72:
