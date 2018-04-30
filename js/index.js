@@ -26,6 +26,8 @@ function setup() {
 	displayHourScaleLabels = true;
 	displayDay = true;
 
+	// Set day to get sunrise and sunset times for
+
 	var date = new Date();
 
 	dayToCheck = date.toISOString().substring(0, 10);
