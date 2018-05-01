@@ -1,3 +1,13 @@
+//
+// index.js
+// clock-p5js
+//
+// Created by Johannes Jakob
+// © 2018 Johannes Jakob
+//
+// Find the project repository on github.com/JohJakob/clock-p5js
+//
+
 // Declare global variables
 
 var backgroundColor, dayDisplayColor, dayDisplayTextColor, hourScaleColor, minuteScaleColor, hourHandColor, minuteHandColor, secondHandColor;
