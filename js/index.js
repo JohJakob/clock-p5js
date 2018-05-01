@@ -136,7 +136,7 @@ function setColors() {
 }
 
 function setStrokeWeights() {
-	dayDisplayStrokeWeight = clockRadius / 80;
+	dayDisplayStrokeWeight = clockRadius / 100;
 	hourScaleStrokeWeight = clockRadius / 40;
 	minuteScaleStrokeWeight = clockRadius / 120;
 	hourHandStrokeWeight = clockRadius / 20;
